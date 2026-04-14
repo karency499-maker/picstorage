@@ -1,0 +1,2275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小荷AI辅助问诊新医生入驻培训测试</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+            min-height: 100vh;
+            padding: 10px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            opacity: 0.95;
+            font-size: 1.05em;
+            line-height: 1.8;
+        }
+
+        .main-content {
+            padding: 15px;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 0;
+            }
+            .container {
+                border-radius: 0;
+                min-height: 100vh;
+            }
+            .main-content {
+                padding: 15px;
+            }
+            .header h1 {
+                font-size: 1.8em;
+            }
+            .header p {
+                font-size: 0.95em;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        /* 登录页面 */
+        .login-section {
+            max-width: 500px;
+            margin: 50px auto;
+            text-align: center;
+        }
+
+        .login-section h2 {
+            color: #333;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: #66bb6a;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(102, 187, 106, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #333;
+            border: 2px solid #ddd;
+        }
+
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%);
+            color: white;
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, #ef5350 0%, #e53935 100%);
+            color: white;
+        }
+
+        /* 考点列表 */
+        .exam-points {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .exam-point-card {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 3px solid transparent;
+        }
+
+        .exam-point-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-color: #66bb6a;
+        }
+
+        .exam-point-card h3 {
+            color: #333;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+        }
+
+        .exam-point-card p {
+            color: #666;
+            font-size: 0.95em;
+        }
+
+        .exam-point-card .status {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            margin-top: 10px;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        /* 学习页面 */
+        .learning-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .learning-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .learning-content {
+          white-space: pre-wrap; /* 核心：保留空格和换行符 */
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .learning-content img {
+            max-width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .learning-content video {
+            width: 100%;
+            border-radius: 10px;
+            margin: 15px 0;
+        }
+
+        .learning-content .text-content {
+            line-height: 1.8;
+            color: #555;
+            font-size: 1.05em;
+        }
+
+        /* 单选题 */
+        .question-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .question-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .question-content {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .question-content h3 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.2em;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+        }
+
+        .option:hover {
+            background: #f8f9fa;
+            border-color: #66bb6a;
+        }
+
+        .option.selected {
+            background: #e8f5e9;
+            border-color: #66bb6a;
+        }
+
+        .option input {
+            margin-right: 15px;
+            width: 20px;
+            height: 20px;
+        }
+
+        /* 实题演示 */
+        .practice-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .practice-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .practice-case {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .practice-case h4 {
+            color: #66bb6a;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .practice-case .case-info {
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+        }
+
+        .practice-case .case-item {
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .practice-case .case-item:last-child {
+            border-bottom: none;
+        }
+
+        .practice-case .case-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+
+        .practice-case .case-value {
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .practice-buttons {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .practice-buttons .btn {
+            min-width: 120px;
+        }
+
+        /* 结果页面 */
+        .result-section {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .result-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .result-summary {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .result-summary .score {
+            font-size: 4em;
+            font-weight: 700;
+            color: #66bb6a;
+            margin: 20px 0;
+        }
+
+        .result-summary .score.pass {
+            color: #2e7d32;
+        }
+
+        .result-summary .score.fail {
+            color: #c62828;
+        }
+
+        .result-summary .message {
+            font-size: 1.2em;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .result-actions {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .result-details {
+            background: white;
+            padding: 15px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .result-details h3 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .detail-item {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+            border-left: 4px solid #66bb6a;
+        }
+
+        .detail-item.correct {
+            border-left-color: #2e7d32;
+        }
+
+        .detail-item.wrong {
+            border-left-color: #c62828;
+        }
+
+        .detail-item h4 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .detail-item .detail-info {
+            font-size: 0.95em;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        .detail-item .explanation {
+            background: #fff3cd;
+            padding: 10px 15px;
+            border-radius: 5px;
+            margin-top: 10px;
+            font-size: 0.9em;
+        }
+
+      /* ===== 考试结果详情 - 点击展开原题 ===== */
+.detail-item .question-original {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-top: 10px;
+    display: none;
+}
+
+.detail-item .question-original.show {
+    display: block;
+}
+
+.detail-item .view-question-btn {
+    background: none;
+    border: 1px solid #66bb6a;
+    color: #66bb6a;
+    padding: 5px 12px;
+    border-radius: 15px;
+    font-size: 12px;
+    cursor: pointer;
+    margin-top: 8px;
+}
+
+.detail-item .view-question-btn:hover {
+    background: #66bb6a;
+    color: white;
+}
+
+.detail-item .question-original h5 {
+    color: #333;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.detail-item .question-original .q-text {
+    color: #555;
+    margin-bottom: 10px;
+    line-height: 1.6;
+    font-size: 13px;
+}
+
+.detail-item .question-original .q-options div {
+    padding: 4px 0;
+    font-size: 13px;
+}
+
+.detail-item .question-original .q-options .correct {
+    color: #43a047;
+    font-weight: bold;
+}
+
+.detail-item .question-original .q-options .wrong {
+    color: #e53935;
+    text-decoration: line-through;
+}
+
+      
+        /* 管理员入口 - 右下角 */
+        .admin-entry-float {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .admin-entry-btn {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid #ddd;
+            border-radius: 50px;
+            padding: 10px 20px;
+            font-size: 12px;
+            color: #999;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .admin-entry-btn:hover {
+            background: white;
+            color: #66bb6a;
+        }
+
+        /* 管理员页面 */
+        .admin-section {
+            margin-top: 30px;
+        }
+
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .admin-tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            overflow-x: auto;
+        }
+
+        .admin-tab {
+            padding: 10px 25px;
+            background: #f8f9fa;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .admin-tab.active {
+            background: #66bb6a;
+            color: white;
+        }
+
+        .admin-panel {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+        }
+
+        .admin-panel.hidden {
+            display: none;
+        }
+
+        .config-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        .config-form .full-width {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: inherit;
+        }
+
+        .form-group textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .exam-points-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+
+        .exam-point-edit {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .exam-point-edit h4 {
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .exam-point-edit .point-number {
+            background: #66bb6a;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 0.8em;
+        }
+
+        /* 记录列表 */
+        .records-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .records-table th,
+        .records-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid #e9ecef;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .records-table th {
+            background: #66bb6a;
+            color: white;
+            font-weight: 600;
+        }
+
+        .records-table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .records-table .score-pass {
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .records-table .score-fail {
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        .records-table .correct-cell {
+            background: #c8e6c9;
+            color: #2e7d32;
+            font-weight: 600;
+        }
+
+        .records-table .wrong-cell {
+            background: #ffcdd2;
+            color: #c62828;
+            font-weight: 600;
+        }
+
+        /* 详细记录表格 */
+        .detail-records-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow-x: auto;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+
+        .detail-records-table th,
+        .detail-records-table td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #e9ecef;
+            font-size: 12px;
+        }
+
+        .detail-records-table th {
+            background: #66bb6a;
+            color: white;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .detail-records-table tr:nth-child(even) {
+            background: #f8f9fa;
+        }
+
+        .detail-records-table .cell-correct {
+            background: #c8e6c9;
+            color: #2e7d32;
+        }
+
+        .detail-records-table .cell-wrong {
+            background: #ffcdd2;
+            color: #c62828;
+        }
+
+        /* 响应式 */
+        @media (max-width: 768px) {
+            .config-form {
+                grid-template-columns: 1fr;
+            }
+
+            .config-form .full-width {
+                grid-column: span 1;
+            }
+
+            .practice-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .result-actions {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .records-table {
+                font-size: 11px;
+            }
+
+            .records-table th,
+            .records-table td {
+                padding: 8px 5px;
+            }
+        }
+      
+      /* ========== 撒花动画样式 ========== */
+        .confetti-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        .confetti {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            opacity: 0;
+            animation: confetti-fall 3s ease-out forwards;
+        }
+
+        @keyframes confetti-fall {
+            0% {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(100vh) rotate(720deg);
+            }
+        }
+
+        /* ========== 悬浮文字动画样式 ========== */
+        .floating-text {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 28px;
+            font-weight: bold;
+            color: #66bb6a;
+            text-shadow: 0 2px 10px rgba(102, 187, 106, 0.5);
+            z-index: 10000;
+            pointer-events: none;
+            animation: float-up 2s ease-out forwards;
+        }
+
+        @keyframes float-up {
+            0% {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.5);
+            }
+            20% {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+            40% {
+                transform: translate(-50%, -60%) scale(1);
+            }
+            100% {
+                opacity: 0;
+                transform: translate(-50%, -150%) scale(0.8);
+            }
+        }
+      
+      /* ========== 图片放大弹窗 ========== */
+        .image-lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            z-index: 99999;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            cursor: zoom-out;
+        }
+
+        .image-lightbox.active {
+            display: flex;
+        }
+
+        .image-lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 10px;
+            box-shadow: 0 10px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        .image-lightbox .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 40px;
+            color: white;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .image-lightbox .close-btn:hover {
+            transform: scale(1.2);
+        }
+
+        /* 让学习内容中的图片可点击放大 */
+        .learning-content img {
+            cursor: zoom-in;
+            transition: transform 0.3s;
+        }
+
+        .learning-content img:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+        }
+      
+      
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎯 小荷AI辅助问诊新医生入驻培训测试</h1>
+            <p>欢迎您参与小荷AI辅助问诊新医生入驻培训测试，测试通过即可上线接单，您的每次判断都对真实患者至关重要，请务必认真学习，祝您答题顺利～<br>————————<br>📖操作指南：每个考点包括学习和单选，需根据学习内容完成单选答题</p>
+        </div>
+
+        <div class="main-content">
+            <div id="loginSection" class="login-section">
+                <div class="input-group">
+                    <label for="userName">请输入您的姓名</label>
+                    <input type="text" id="userName" placeholder="请输入姓名" />
+                </div>
+                <button class="btn btn-primary" onclick="startExam()">开始考试</button>
+            </div>
+
+            <div id="progressSection" class="hidden" style="margin-top: 20px; background: white; padding: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                    <span style="font-weight: 600; color: #555; font-size: 14px;">答题进度</span>
+                    <span id="progressText" style="font-weight: bold; color: #66bb6a; font-size: 14px;">0%</span>
+                </div>
+                <div style="background: #e9ecef; border-radius: 10px; height: 8px; width: 100%; overflow: hidden;">
+                    <div id="progressBarFill" style="background: linear-gradient(135deg, #66bb6a 0%, #43a047 100%); height: 100%; width: 0%; transition: width 0.4s ease-in-out;"></div>
+                </div>
+            </div>
+            <div id="examListSection" class="hidden">
+                <h2>📚 考点学习</h2>
+                <p>请按顺序完成以下考点的学习和考试</p>
+                <div class="exam-points" id="examPointsList"></div>
+            </div>
+
+            <div id="learningSection" class="hidden">
+                <div class="learning-section">
+                    <h2 id="learningTitle">考点学习</h2>
+                    <div class="learning-content" id="learningContent"></div>
+                    <div style="text-align: center;">
+                        <button class="btn btn-primary" onclick="startQuestion()">开始答题</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="questionSection" class="hidden">
+                <div class="question-section">
+                    <h2 id="questionTitle">单选题</h2>
+                    <div class="question-content">
+                        <h3 id="questionText">题目内容</h3>
+                        <div class="options" id="optionsContainer"></div>
+                    </div>
+                    <div style="text-align: center;">
+                        <button class="btn btn-primary" onclick="submitQuestion()">提交答案</button>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <div id="resultSection" class="hidden">
+                <div class="result-section">
+                    <h2>📊 考试结果</h2>
+                    <div class="result-summary">
+                        <p id="userNameDisplay"></p>
+                        <div class="score" id="finalScore">0</div>
+                        <p class="message" id="resultMessage"></p>
+                        <div class="result-actions" id="resultActions"></div>
+                    </div>
+                    <div class="result-details">
+                        <h3>📝 详细解析</h3>
+                        <div id="resultDetails"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="admin-entry-float">
+        <button class="admin-entry-btn" onclick="showAdminLogin()">管理员入口</button>
+    </div>
+
+    <div id="adminLoginSection" class="hidden login-section">
+        <h2>管理员登录</h2>
+        <div class="input-group">
+            <label for="adminPassword">管理员密码</label>
+            <input type="password" id="adminPassword" placeholder="请输入管理员密码" />
+        </div>
+        <button class="btn btn-primary" onclick="adminLogin()">登录</button>
+        <button class="btn btn-secondary" onclick="hideAdminLogin()">取消</button>
+    </div>
+
+    <div id="adminSection" class="hidden admin-section">
+        <div class="container" style="background: white; margin-top: 0;">
+            <div class="main-content">
+                <div class="admin-header">
+                    <h2>⚙️ 系统管理</h2>
+                    <button class="btn btn-secondary" onclick="logoutAdmin()">退出管理</button>
+                </div>
+
+                <div class="admin-tabs">
+                    <button class="admin-tab active" onclick="switchAdminTab('config')">系统配置</button>
+                    <button class="admin-tab" onclick="switchAdminTab('points')">考点管理</button>
+                    <button class="admin-tab" onclick="switchAdminTab('records')">考试记录</button>
+                    <button class="admin-tab" onclick="switchAdminTab('detailRecords')">详细记录</button>
+                </div>
+
+                <div id="configPanel" class="admin-panel">
+                    <h3>🎛️ 系统配置</h3>
+                    <div class="config-form">
+                        <div class="form-group">
+                            <label>系统标题</label>
+                            <input type="text" id="systemTitle" value="小荷AI辅助问诊新医生入驻培训测试" />
+                        </div>
+                        <div class="form-group">
+                            <label>通过分数</label>
+                            <input type="number" id="passingScore" value="90" min="0" max="100" />
+                        </div>
+                        <div class="form-group full-width">
+                            <label>管理员密码</label>
+                            <input type="text" id="adminPasswordConfig" value="admin12345" />
+                        </div>
+                        <div class="form-group full-width">
+                            <button class="btn btn-primary" onclick="saveSystemConfig()">保存配置</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="pointsPanel" class="admin-panel hidden">
+                    <h3>📚 考点管理</h3>
+                    <div class="exam-points-list" id="adminPointsList"></div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-success" onclick="saveAllPoints()">保存所有考点</button>
+                        <button class="btn btn-secondary" onclick="exportConfig()">导出配置</button>
+                        <button class="btn btn-secondary" onclick="document.getElementById('importFile').click()">导入配置</button>
+                        <input type="file" id="importFile" accept=".json" style="display: none;" onchange="importConfig(event)" />
+                    </div>
+                </div>
+
+                <div id="recordsPanel" class="admin-panel hidden">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>📋 考试记录</h3>
+                        <button class="btn btn-danger" onclick="deleteAllRecords()" style="padding: 10px 20px; font-size: 14px; margin: 0;">清空所有记录</button>
+                    </div>
+                    <div id="recordsList">
+                        <table class="records-table">
+                            <thead>
+                                <tr>
+                                    <th>姓名</th>
+                                    <th>考试时间</th>
+                                    <th>分数</th>
+                                    <th>状态</th>
+                                    <th>详情</th>
+                                    <th>删除</th>
+                                </tr>
+                            </thead>
+                            <tbody id="recordsTableBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div id="detailRecordsPanel" class="admin-panel hidden">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+                        <h3>📊 详细答题记录</h3>
+                        <button class="btn btn-danger" onclick="deleteAllRecords()" style="padding: 10px 20px; font-size: 14px; margin: 0;">清空所有记录</button>
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="detail-records-table" id="detailRecordsTable">
+                            <thead id="detailRecordsHead"></thead>
+                            <tbody id="detailRecordsBody"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== 配置数据 ====================
+        let systemConfig = {
+            systemTitle: '小荷AI辅助问诊新医生入驻培训测试',
+            passingScore: 90,
+            adminPassword: 'admin12345'
+        };
+
+        let examPoints = [
+            {
+                id: 1,
+                title: 'AI辅助问诊的评估对象',
+                description: '参考依据',
+                learningContent: {
+                    text: '对话内容仅代表信息收集过程，开方评估内容为：<br><br>「病例信息」中的诊断：是否正确、清晰，有充足病史证据、符合患者实际沟通与合理用药规则。<br><br>「用药建议」：药品符合相关疾病诊疗指南规范，满足合理用药规则；服药指导清晰正确，符合患者病例情况。<br><br><b>根据对话内容中患者沟通情况，如AI辅助问诊「用药建议」和「病例信息」页面均符合相关的疾病诊疗指南与规范与合理用药原则，可酌情通过。</b>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B91.png',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于 AI 辅助问诊开方评估规则，下列选项中 错误 的是？',
+                    options: ['评估应以患者原话为主，避免过度参考 AI 助理所述内容', '「病例信息」诊断需正确清晰，有充足病史证据支撑', '评估时可优先采信 AI 助理表述，患者沟通内容仅作次要参考', '用药建议需符合诊疗指南与合理用药规则，服药指导应清晰贴合病例情况'],
+                    correctAnswer: 2,
+                    explanation: '根据对话内容中患者沟通情况，如AI辅助问诊「用药建议」和「病例信息」页面均符合相关的疾病诊疗指南与规范与合理用药原则，可酌情通过。'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，29岁，75kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '多潘立酮片 10mg*30片（3次/日，1盒）',
+                        prescriptionDiagnosis: '消化不良（K30.x00）,腹胀（R14.x00x006）,呃逆（R06.600）,反酸（R12.x00x002）',
+                        correctAnswer: false,
+                        explanation: '患者多次明确提及“需要开益生菌”，主需明确，此时用药应该考虑患者主需进行开具，本单用药建议不合理，应该拒方。'
+                    },
+                    {
+                        patientInfo: '男，49岁，115kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '乳果糖口服溶液 100ml:67g（1次/日，2盒）',
+                        prescriptionDiagnosis: '便秘（K59.000）,腹痛（R10.402）,肠鸣音亢进（R19.100x001）',
+                        correctAnswer: true,
+                        explanation: '诊断所有字段都来自患者病史，完整有效，处方合理，用药无科学性错误，可用。可酌情通过开方。'
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: '开方评估尺度',
+                description: '可用非最优，可酌情通过',
+                learningContent: {
+                    text: '结合患者意愿、医学药学必要性的情况下，对AI辅助问诊结果页进行开方评估时，参考如下原则：<br><b>只要属于符合相关的疾病诊疗指南与规范的所选药物，无安全风险，虽药物选择非首选，可以酌情通过。</b><br><br>下方是呼吸科常见疾病的线上诊疗标准，以及需要关注拒绝开方的红线场景<br>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B92.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点1.jpg \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于 AI 辅助问诊开方评估规则，下列说法 错误 的是？',
+                    options: ['药物选择非最优，但符合诊疗指南、无安全风险，结合患者情况可酌情通过', '患者表现为急性腹泻，首选药物为蒙脱石散，AI 建议益生菌虽非首选，但可酌情通过', '患者告知存在鼻塞、流涕、咽干，AI建议当前先针对流涕给出用药，可酌情通过', '患者表现为急性腹泻和腹痛，AI 建议益生菌，直接不予通过'],
+                    correctAnswer: 3,
+                    explanation: '单选：用户主要表现为水样便，应首选蒙脱石散，AI建议益生菌非最优选但可接受。'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，31岁，82kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '铝碳酸镁片 0.5g*24片（3次/日，1片/次，1盒）',
+                        prescriptionDiagnosis: '反酸（R12.x00x002）',
+                        correctAnswer: true,
+                        explanation: '当前患者基于反流性食管炎进行问诊，告知有反酸的症状，基于症状给出了用药建议，整体来讲没有医学科学性错误，且能解决患者一部分病情，基于可用非最优原则可通过'
+                    },
+                    {
+                        patientInfo: '男，42岁，160kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '大便习惯改变（R19.400）',
+                        prescriptionDiagnosis: '布拉氏酵母菌散 0.25g*10袋（2次/日，2盒）',
+                        correctAnswer: true,
+                        explanation: '患者自述拉稀，但是后续补充为糊状，没有更多额外信息，当前信息不满足腹泻诊断标准，应处大便习惯改变。处方诊断正确，用药可用。'
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: '患者自述的判断-口语化表达',
+                description: '患者自述有某个症状，描述不专业时何时置信',
+                learningContent: {
+                    text: 'Q：患者说自己有某疾病，是否可以采信其表述作为病史，并给出诊断？<br><br>A：1、如患者为口语化表达，描述自己的情况或明确自述对应症状 / 疾病时，如果<b>在当前对话中无明确客观证据反驳、无矛盾信息或明显不符时，可酌情采信患者描述。</b>若后续对话中<b>存在与用户自述内容明确矛盾的内容，则不可采信。</b><br><br>表述模糊时，可依据您的临床经验酌情判断，平台保留申诉渠道。',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B93.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点1.jpg \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于采信患者自述作为病史诊断，下列说法 错误 是？',
+                    options: ['患者自述感冒了，对话中无矛盾信息，可酌情采信该表述', '患者自述流行性感冒，但后续又说没有发热，也没有做病毒检测，存在矛盾，不可采信', '患者自述疾病存在矛盾信息，仍采信并用于诊断', '患者表述模糊时，可结合临床经验酌情进行判断'],
+                    correctAnswer: 2,
+                    explanation: '在当前对话中无明确客观证据反驳、无矛盾信息或明显不符时，可酌情采信患者描述。若后续对话中存在与用户自述内容明确矛盾的内容，则不可采信。'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，31岁，70kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '多潘立酮片 10mg*30片（3次/日，1盒）',
+                        prescriptionDiagnosis: '腹胀（R14.x00x006）,消化不良（K30.x00）',
+                        correctAnswer: true,
+                        explanation: '患者自述胃里有东西堵着不消化，口语表达“不消化”，采信其为消化不良。后续告知持续3-4天，没有矛盾信息，可置信消化不良，诊断和用药正确'
+                    },
+                    {
+                        patientInfo: '男，44岁，55kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '双歧杆菌三联活菌胶囊 0.21g*24粒（2次/日，2盒）',
+                        prescriptionDiagnosis: '腹泻（K52.916）',
+                        correctAnswer: false,
+                        explanation: '患者自述“拉肚子”，但是后续追问告知仅1-2次，大便性状和持续天数均未知。患者自述的内容，和腹泻的确诊标准（3次以上or水样便）存在矛盾，不可确诊腹泻，应该拒方。'
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: '患者自述的判断-专业表达',
+                description: '患者以专业疾病名问询时，如何判断是否采信',
+                learningContent: {
+                    text: 'Q：患者说自己有某疾病，是否可以采信其表述作为病史，并给出诊断？<br>A：如患者为医学专业术语表达，<b>当前问诊围绕该疾病的诊疗展开，后续问答无确诊矛盾信息，可酌情采信。</b><br>否则存在客观证据反驳/矛盾/患者否认患病时，不可采信。',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B93.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点1.jpg \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于采信患者医学专业术语自述作为病史诊断，下列说法 错误 的是？',
+                    options: ['患者咨询“慢性鼻炎”，问诊全程围绕慢性鼻炎诊疗展开，后续无矛盾信息，可酌情采信', '患者用医学术语咨询“流行性感冒”，后续对话中提供确诊检查报告，可采信该疾病', '患者用医学术语咨询“慢性鼻炎吃什么药”，后续没有围绕该疾病展开问诊，告知病程不长，处方诊断慢性鼻炎', '患者用专业术语说咨询“支气管炎不舒服怎么办”，若后续告知检查未患病，不可采信该表述'],
+                    correctAnswer: 2,
+                    explanation: '单选：如患者为医学专业术语表达，当前问诊围绕该疾病的诊疗展开，后续问答无确诊矛盾信息，可酌情采信。否则存在客观证据反驳/矛盾/患者否认患病时，不可采信。'
+                },
+                practices: [
+                    {
+                        patientInfo: '男，40岁，70kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '兰索拉唑肠溶片 15mg*14片（1次/日，4盒）；铝碳酸镁片 0.5g*24片（3次/日，1盒）',
+                        prescriptionDiagnosis: '反流性食管炎（K21.001）,胸痛（R07.400）',
+                        correctAnswer: true,
+                        explanation: '患者以疾病术语进行表达，主诉反流性食管炎治疗相关，后续有基于该疾病的询证诊疗逻辑，告知有胸骨后疼痛等不适，且无矛盾信息，可判定该疾病信息可信，给出反流性食管炎诊断。'
+                    },
+                    {
+                        patientInfo: '男，29岁，75kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '奥美拉唑肠溶胶囊 20mg*14粒（1次/日，1盒）；硫糖铝混悬凝胶 5ml：1g*12袋（2次/日，2盒）',
+                        prescriptionDiagnosis: '疼痛（R52.900）,十二指肠溃疡（K26.900x001）',
+                        correctAnswer: false,
+                        explanation: '患者诉“十二指肠溃疡有夜间疼的症状”，后续围绕诊疗继续追问，但是患者补充说自己没有不适/或者明确没有做检查不确定是否确诊，这个时候无法采信患者的术语表达是基于复诊目的，不应给出十二指肠溃疡的诊断，需要完善检查报告和检查结果。这单应该拒方'
+                    }
+                ]
+            },
+            {
+                id: 5,
+                title: '疾病确诊的标准',
+                description: '在AI辅助问诊中，如何判断当前给出的AI疾病分析是否合理',
+                learningContent: {
+                    text: 'Q：怎么判断疾病诊断正不正确？<br><br>A：符合疾病诊断标准的可给疾病诊断，不符合疾病诊断标准的可以按症状给出诊断。<br><br><b>多余症状/疾病为错误诊断，遗漏症状/疾病不影响医学科学性时可酌情通过。</b>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B95.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点1.jpg \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于AI辅助问诊中对于AI疾病分析的判断，下列说法 错误 的是？',
+                    options: ['患者告知咳嗽、每年春天都这样，AI疾病分析为慢性支气管炎','患者告知最近3天一直咽部疼痛、发痒，AI疾病分析为急性咽炎', ' 患者告知鼻塞、流鼻涕、发热38度，昨晚突然出现的，AI疾病分析为急性上呼吸道感染',  '患者告知流行性感冒并提供了抗原抗体检测结果，AI疾病分析为流行性感冒'],
+                    correctAnswer: 0,
+                    explanation: '线上诊疗信息有限的情况下，确诊慢性支气管炎需要先排除心肺功能异常，仅在患者明确告知已做检查排除/确诊支气管炎时可给出。'
+                },
+                practices: [
+                    {
+                        patientInfo: '男，23岁，70kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '奥美拉唑肠溶胶囊 20mg*14粒（1次/日，1盒）；盐酸伊托必利片 50mg*12片（3次/日，2盒）',
+                        prescriptionDiagnosis: '消化不良（K30.x00）,急性胃炎（K29.100x001）',
+                        correctAnswer: false,
+                        explanation: '患者自述“经常”进食后有恶心、呕吐、胃胀胃痛，当前诱因不明，且是经常发生，不满足急性胃炎的确诊标准，错误诊断为急性胃炎过度。但是患者告知存在饭后腹胀的情况，满足消化不良确诊标准1腹胀2与食物有关，消化不良是对的。'
+                    },
+                    {
+                        patientInfo: '男，27岁，150kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '奥美拉唑肠溶胶囊20mg*14粒（1次/日，1盒）',
+                        prescriptionDiagnosis: '胃灼热（R12.x00）,胃食管反流（K21.900x003）',
+                        correctAnswer: true,
+                        explanation: '患者主诉酸水腐蚀食管，最近经常有反酸、烧心，满足胃食管反流确诊的典型症状：同时有反酸+烧心，诊断考虑胃食管反流可能，处方和用药正确，可以酌情开方。'
+                    }
+                ]
+            },
+            {
+                id: 6,
+                title: '处方规范性-疾病分析字段鉴别',
+                description: '怎么判断AI疾病分析字段是否符合规范',
+                learningContent: {
+                    text: '针对AI疾病分析中出现的ICD诊断，应遵循如下判断原则：<br><br><b>若该诊断为明确错误，则对应处方判定为不合格；若仅为临床不常用、并非明确错误，则处方可正常通过。</b>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B96.png',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于AI辅助问诊中对于AI疾病分析的判断，下列说法 正确 的是？',
+                    options: ['患者告知嗓子有痰卡着，咽痒，AI疾病分析为咽炎、食欲缺乏', '患者告知鼻塞、打喷嚏，鼻子难受，AI疾病分析为鼻炎、不适', '患者告知咽部不适、咽干发痒，AI疾病分析为咽异感症、咽炎', '患者告知腹泻、鼻塞、流鼻涕，AI疾病分析为流行性感冒'],
+                    correctAnswer: 1,
+                    explanation: '1、病史中完全未提及患者存在食欲缺乏的情况，食欲缺乏无中生有，错误诊断。2、患者表明存在“难受”等症状，有对应病史，符合“不适”的诊断字段，仅临床不常用。3、咽异感症为外科诊断，需要有明确检查排除器质性疾病。4、患者未提供检查报告，也不满足发热，无法确诊流行性感冒。线上确诊流行性感冒标准为：<br>满足以下三种情况之一可确诊：<br>1.明确提供流感病毒核酸检测或者抗原抗体检测结果<br>2.同时满足3条：有密接病史+高热（>38.5度）+全身症状（肌肉酸痛、头痛、乏力其中之一）<br>3.同时满足4条：发热（<38.5度但高于正常体温）+密接病史+全身症状（肌肉酸痛、头痛、乏力其中之一）+呼吸道症状（咳嗽、咳痰、咽痛、鼻塞等其中之一）'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，33岁，58kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '奥美拉唑肠溶胶囊10mg*28粒（1次/日，1盒）',
+                        prescriptionDiagnosis: '胃痛（R10.102）,皮肤感觉异常（R20.200）',
+                        correctAnswer: false,
+                        explanation: '患者对话中未提及任何“皮肤感觉异常”相关，该诊断属于无中生有，错误诊断，应该拒方。如在评估过程中遇到不熟悉的诊断，可自行搜索查找确认'
+                    },
+                    {
+                        patientInfo: '男，36岁，71kg，孕期：否，过往病史：有，药物过敏：无，服药情况：是，肝肾情况：异常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '蒙脱石散 3g*10袋（3次/日，1盒）；双歧杆菌三联活菌胶囊 0.21g*24粒（2次/日，2盒）',
+                        prescriptionDiagnosis: '乏力（R53.x00x002）,腹泻（K52.916）,恶心和呕吐（R11.x00）,不适（R53.x00x005）',
+                        correctAnswer: true,
+                        explanation: '患者存在水样便、 恶心呕吐、浑身没劲、肚子难受等症状，当前诊断中“不适”的ICD诊断有对应的病史，该诊断为临床不常用，非明确错误，处方可以酌情通过。'
+                    }
+                ]
+            },
+            {
+                id: 7,
+                title: 'AI辅助问诊-线上诊疗红线-1',
+                description: 'AI辅助问诊线上诊疗「绝对不可」通过开方的红线规则学习',
+                learningContent: {
+                    text: '与真人在线问诊开处方红线规则一致，需要关注的类型包括：<br><br>1.禁止开具国家实行特殊管理以及网络禁售的药品<br>2.禁止为特殊人群开药（6岁以下儿童、哺乳期患者、孕妇）<br>3.需要关注用药禁忌和配伍禁忌<br><b>4.如有危急重症指征，严禁通过开方</b><br><br><b>以下是一些呼吸科常见报警症状，如在对话中提及这些症状，应及时拒方。</b>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B97.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于AI辅助问诊线上诊疗红线规则，下列说法 错误 的是？',
+                    options: ['患者肝功能异常，此时不可开具肝损伤药物', '患者告知存在肝肾功能重度衰竭，此时不可线上开方，建议线下就诊', '患者告知存在咳血，且呼吸不畅，主诉咽炎、鼻塞，通过开方', '患者检查报告提示肺结核、肿瘤，危急重症不可线上开方，应拒方。'],
+                    correctAnswer: 2,
+                    explanation: '患者有咳血和呼吸困难的危急重症指征，不能线上开方，优先建议线下就医，线上申请开方时应拒绝。'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，21岁，46kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '蒙脱石散 3g*10袋（3次/日，1袋/次，1盒）；双歧杆菌三联活菌胶囊 0.21g*24粒（2次/日，2粒/次，2盒）',
+                        prescriptionDiagnosis: '腹泻（K52.916）',
+                        correctAnswer: false,
+                        explanation: '患者自述拉肚子超过三天，且存在便血的情况。考虑用药安全视角，便血不可开方，应拒方。'
+                    },
+                    {
+                        patientInfo: '女，25岁，62kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '乳果糖口服溶液 100ml:67g（1次/日，2瓶）；双歧杆菌三联活菌胶囊 0.21g*24粒（2次/日，2盒）',
+                        prescriptionDiagnosis: '腹痛（R10.402）,便秘（K59.000）,腹胀（R14.x00x006）',
+                        correctAnswer: false,
+                        explanation: '乳果糖口服液对乳糖或半乳糖不耐受者、果糖不耐受者、乳糖酶缺乏、或葡萄糖/半乳糖吸收不良综合症患者禁用。此订单属于禁忌症场景，应该拒方。'
+                    }
+                ]
+            },
+            {
+                id: 8,
+                title: 'AI辅助问诊-线上诊疗红线-2',
+                description: 'AI辅助问诊线上诊疗「绝对不可」通过开方的红线规则学习-第二部分',
+                learningContent: {
+                    text: '与真人在线问诊开处方红线规则一致，需要关注的类型包括：<br><br>1.禁止开具国家实行特殊管理以及网络禁售的药品<br>2.禁止为特殊人群开药（6岁以下儿童、哺乳期患者、孕妇）<br>3.需要关注用药禁忌和配伍禁忌<br><b>4.如有危急重症指征，严禁通过开方</b><br><br><b>以下是一些呼吸科常见报警症状，如在对话中提及这些症状，应及时拒方。</b>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B97.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于AI辅助问诊线上诊疗红线规则，下列说法 错误 的是？',
+                    options: ['患者申请开方时填写信息为成人，但是咨询时为6岁以下儿童用药，不可开方', '患者申请开方时填写信息为一切正常，咨询时告知为哺乳期，不可开方', ' 蒙托石散说明书告知成人使用1袋/次，儿童使用2/3袋/次，患者16岁5个月，使用2/3袋/次', '患者咨询时告知正在妊娠，最近患流行性感冒，开具抗病毒药物'],
+                    correctAnswer: 3,
+                    explanation: '妊娠期患者为孕妇，不可线上开方。'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，27岁，58kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '乳果糖口服溶液 15mL：10g*10袋（1次/日，30mL/次，3盒）',
+                        prescriptionDiagnosis: '便秘（K59.000）,腹胀（R14.x00x006）',
+                        correctAnswer: false,
+                        explanation: '根据线上诊疗安全性原则，孕妇、哺乳期、6岁以下儿童开方，应该拦截'
+                    },
+                    {
+                        patientInfo: '女，17岁，89kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '蒙脱石散 3g*10袋（3次/日，1盒）；双歧杆菌三联活菌胶囊 0.21g*24粒（2次/日，2盒）',
+                        prescriptionDiagnosis: '腹泻（K52.916）,腹痛（R10.402）',
+                        correctAnswer: true,
+                        explanation: '用户主要症状是腹泻，输出蒙脱石散合理和双歧杆菌三联活菌胶囊合理。患者为18岁以下儿童，平台当前对于药品说明书明确提及儿童和成人用量的药品，小于18岁0个月均应该按照儿童用量，如蒙脱石散应该使用儿童用量2/3袋。而没有在说明书明确提及儿童用量的，认为大于14岁等同成人用量。'
+                    }
+                ]
+            },
+            {
+                id: 9,
+                title: 'AI辅助问诊处方规范性-1',
+                description: '一个有效处方的基本标准，及合理用药原则',
+                learningContent: {
+                    text: '和线上真人问诊开方一样，您开具后作为有效力的真实处方，诊断和用药应该满足处方规范性的基本要求。其中就包括了如下重要的几点：<br><br>1.处方中的用药应该在诊断中有对应适应症字段。<br>2.处方中的诊断应该是<b>明确、无重复、无矛盾</b>的。<br><br>其余规则可见下图：',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B99.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点1.jpg \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于AI辅助问诊处方规范性规则，下列说法 正确 的是？',
+                    options: ['AI疾病分析中同时出现「咽炎」「慢性咽炎」', '患者同时告知存在鼻塞、咽痛，AI疾病分析给出「鼻塞、咽痛」', '患者告知存在咳嗽、胸闷、气短，AI疾病分析给出「咳嗽」、「胸痛」', '患者告知已经服用了连花清瘟，未提及是否续方，AI用药建议给出连花清瘟'],
+                    correctAnswer: 1,
+                    explanation: '1、咽炎和慢性咽炎为重复诊断。<br>2、正确，诊断不明时可按照症状给出。<br>3、胸闷气短为报警症状，建议线下就诊。<br>4、患者已经服用了用药建议中的药品，不明确为续方，不应开方，属于重复用药。'
+                },
+                practices: [
+                    {
+                        patientInfo: '男，28岁，90kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--【患者】：老闹肚子大便不成形怎么回事。<br>--「医生」：老拉肚子大便不成形，是一天拉三次以上，还是一天一到三次？<br>--【患者】：一天拉三次以上。<br>--「医生」：您这种情况大概持续多久了？比如是最近一周、一个月，还是已经超过三个月了？<br>--【患者】：一个月以上<br>--「医生」：您在拉肚子的时候，有没有同时出现腹痛、腹胀、恶心呕吐，或者大便带血、带黏液的情况呢？如果有，能简单描述一下具体表现吗？<br>--【患者】：大便不带血，擦屁股时肛门处偶尔有一点',
+                        medicationAdvice: '蒙脱石散 3g*10袋（3次/日，1盒）',
+                        prescriptionDiagnosis: '腹泻（K52.916）,慢性腹泻（K52.908）,大便习惯改变',
+                        correctAnswer: false,
+                        explanation: '腹泻和慢性腹泻是重复诊断，腹泻和大便习惯改变是矛盾诊断，均不能同时存在。'
+                    },
+                    {
+                        patientInfo: '男，23岁，70kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '诺氟沙星胶囊 0.1g*30粒（2次/日，1盒）',
+                        prescriptionDiagnosis: '腹泻（K52.916）,腹痛（R10.402）',
+                        correctAnswer: false,
+                        explanation: '诺氟沙星胶囊主要用于适用于敏感菌所致的尿路感染、淋病、前列腺炎、肠道感染和伤寒及其他沙门菌感染，用户具体情况未知，优先考虑蒙脱石散等药物。此外，哪怕用户可以确诊，考虑处方规范性用药应该有对应适应症的字段匹配，应该在处方“诊断”字段中，有感染相关的字段，如“急性肠胃炎”等。'
+                    }
+                ]
+            },
+            {
+                id: 10,
+                title: 'AI辅助问诊处方规范性-2',
+                description: '一个有效处方的基本标准，及合理用药原则-第二部分',
+                learningContent: {
+                    text: '和线上真人问诊开方一样，您开具后作为有效力的真实处方，诊断和用药应该满足处方规范性的基本要求。其中就包括了如下重要的几点：<br><br>1.处方中的用药应该在诊断中有对应适应症字段。例如开具抗生素需要在诊断中有明确感染字段。<br>2.处方中的诊断应该是<b>明确、无重复、无矛盾</b>的。例如咽炎和慢性咽炎不可同时在处方诊断中出现。<br>3.开具处方时需要关注特殊人群。<br>4.关注重复用药情况等。<br><br>其余规则可见下图：<br>',
+                    imageUrl: 'https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/%E8%80%83%E7%82%B99.png \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点1.jpg \n https://cdn.jsdelivr.net/gh/karency499-maker/picstorage@main/呼吸科-考点2.jpg',
+                    videoUrl: ''
+                },
+                question: {
+                    question: '关于AI辅助问诊处方规范性规则，下列说法 正确 的是？',
+                    options: ['患者告知鼻塞、喷嚏、流涕，AI疾病分析为「鼻塞」，用药建议左氧氟沙星胶囊', '患者病例信息显示80岁，发热、咳嗽并告知自行使用抗生素效果不佳，开具处方', '患者病例中填写「肝肾重度异常」，此时不可开方，应拒方', '患者病例中填写已服用兰索拉唑，用药建议给出奥美拉唑'],
+                    correctAnswer: 2,
+                    explanation: '1.左氧氟沙星胶囊为抗生素药物，开具抗生素类药物需要有感染字段，如鼻炎等。2.老年患者有发热、呼吸问题，抗生素治疗效果不佳，潜在肺部感染，线上不应开方，建议线下就诊。3.正确。4.兰索拉唑和奥美拉唑为同类药物，患者正在服用同类药物，未提及是否续方，为避免重复用药应拒方。'
+                },
+                practices: [
+                    {
+                        patientInfo: '女，29岁，75kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '铝碳酸镁片 0.5g24片（3次/日，1片/次，1盒）',
+                        prescriptionDiagnosis: '上腹痛（R10.101）',
+                        correctAnswer: false,
+                        explanation: '铝碳酸镁片药品适应症与诊断不符，开用于治疗胃部的对症治疗药品，需要上腹痛+胃部不适症状诊断，或铝碳酸镁片药品说明书上的其他适应症'
+                    },
+                    {
+                        patientInfo: '男，55岁，96kg，孕期：否，过往病史：无，药物过敏：无，服药情况：否，肝肾情况：正常',
+                        dialogueInfo: '--',
+                        medicationAdvice: '多烯磷脂酰胆碱胶囊 228mg*96粒（3次/日，2粒/次，1盒）',
+                        prescriptionDiagnosis: '脂肪肝（K76.000）,疲劳（R53.x00x010）',
+                        correctAnswer: false,
+                        explanation: '首先，线上诊疗中，如果患者仅有脂肪肝，优先生活化治疗，无需开具保肝药。其次，问诊过程未提及肝异常情况，转氨酶不知，患者也没有自述存在其他肝异常情况，无法确认是否符合保肝药适应症范围。此单按照当前标准，应该拒方。'
+                    }
+                ]
+            }
+        ];
+
+        // ==================== 全局变量 ====================
+        let currentUserName = '';
+        let currentPointIndex = 0;
+        let userAnswers = [];
+        let examRecords = [];
+        let isRetaking = false;
+        let currentSection = 'list'; // 新增：记录当前所在环节，用于断点续传恢复
+
+        // ==================== 初始化 ====================
+        function init() {
+            loadConfig();
+            // 注意：断点续传的拦截逻辑在 startExam 中执行
+        }
+
+        function loadConfig() {
+            const savedConfig = localStorage.getItem('examSystemConfig');
+            if (savedConfig) {
+                systemConfig = JSON.parse(savedConfig);
+            }
+
+            const savedPoints = localStorage.getItem('examPoints');
+            if (savedPoints) {
+                examPoints = JSON.parse(savedPoints);
+            }
+
+            const savedRecords = localStorage.getItem('examRecords');
+            if (savedRecords) {
+                examRecords = JSON.parse(savedRecords);
+            }
+        }
+
+        // ==================== 用户考试流程 ====================
+        function startExam() {
+            const userName = document.getElementById('userName').value.trim();
+            if (!userName) {
+                alert('请输入您的姓名');
+                return;
+            }
+
+            // 1. 检查是否已经参加过考试（维持老用户直接看成绩逻辑）
+            const existingRecord = examRecords.find(record => record.userName === userName);
+            if (existingRecord) {
+                // 显示历史成绩
+                showHistoricalResult(existingRecord);
+                return;
+            }
+
+            // 2. 检查是否有未完成的进度（断点续传逻辑）
+            const savedProgressStr = localStorage.getItem('medical_exam_progress');
+            if (savedProgressStr) {
+                const savedProgress = JSON.parse(savedProgressStr);
+                // 只有当本地进度对应的也是当前输入的名字时，才提示恢复
+                if (savedProgress.userName === userName) {
+                    if (confirm('检测到您有未完成的测试进度，是否从上次断点继续？\n（若选择取消，将清空并重新开始测试）')) {
+                        restoreProgress(savedProgress);
+                        return;
+                    } else {
+                        localStorage.removeItem('medical_exam_progress');
+                    }
+                }
+            }
+
+            // 3. 开始全新测试
+            currentUserName = userName;
+            userAnswers = [];
+            currentPointIndex = 0;
+            isRetaking = false;
+            currentSection = 'list';
+
+            saveProgress(); // 存入初始进度
+
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('examListSection').classList.remove('hidden');
+            updateExamPointsList();
+        }
+
+        // ==================== 断点续传保存/恢复与进度条 ====================
+
+        // 保存当前进度
+        function saveProgress() {
+            const progress = {
+                userName: currentUserName,
+                currentPointIndex: currentPointIndex,
+                userAnswers: userAnswers,
+                currentSection: currentSection
+            };
+            localStorage.setItem('medical_exam_progress', JSON.stringify(progress));
+        }
+
+        // 恢复进度
+        function restoreProgress(progress) {
+            currentUserName = progress.userName;
+            currentPointIndex = progress.currentPointIndex;
+            userAnswers = progress.userAnswers || [];
+            currentSection = progress.currentSection || 'list';
+
+            document.getElementById('loginSection').classList.add('hidden');
+
+            // 根据保存的环节跳转
+            if (currentSection === 'list') {
+                document.getElementById('examListSection').classList.remove('hidden');
+                updateExamPointsList();
+            } else if (currentSection === 'learning') {
+                showLearning(currentPointIndex);
+            } else if (currentSection === 'question') {
+                startQuestion();
+            }
+        }
+
+        // 更新进度条 UI
+        function updateProgressBar() {
+            const totalPoints = examPoints.length;
+            // 计算完成的百分比：做完一个考点就累加 10% (假设共10个点)
+            let percent = Math.floor((currentPointIndex / totalPoints) * 100);
+            
+            document.getElementById('progressBarFill').style.width = percent + '%';
+            document.getElementById('progressText').textContent = percent + '%';
+        }
+
+        // =================================================================
+
+        function showHistoricalResult(record) {
+            // 显示历史结果
+            document.getElementById('progressSection').classList.add('hidden'); // 隐藏进度条
+
+            let totalScore = 0;
+            const scorePerQuestion = 10; // 每题10分
+
+            const resultDetails = document.getElementById('resultDetails');
+            resultDetails.innerHTML = '';
+
+            examPoints.forEach((point, index) => {
+                const questionCorrect = record.userAnswers[index] === point.question.correctAnswer;
+                const questionScore = questionCorrect ? scorePerQuestion : 0;
+                totalScore += questionScore;
+
+                const detailHTML = `
+                    <div class="detail-item ${questionCorrect ? 'correct' : 'wrong'}">
+                        <h4>${point.id}. ${point.title}（本考点得分：${questionScore}/${scorePerQuestion}分）</h4>
+                        <div class="detail-info">
+                            <strong>单选题：</strong>${questionCorrect ? '✓ 正确' : '✗ 错误'}（得分：${questionScore}/${scorePerQuestion}分）
+                        </div>
+                        ${!questionCorrect ? `
+                            <div class="explanation">
+                                <strong>解析：</strong><br/>
+                                ${point.question.explanation}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                resultDetails.innerHTML += detailHTML;
+            });
+
+            const finalScore = totalScore;
+            const passed = finalScore >= systemConfig.passingScore;
+
+            document.getElementById('userNameDisplay').textContent = `考生：${record.userName}`;
+            document.getElementById('finalScore').textContent = finalScore + '分';
+            document.getElementById('finalScore').className = 'score ' + (passed ? 'pass' : 'fail');
+            document.getElementById('resultMessage').textContent = passed ? '🎉 恭喜您通过考试！' : '很遗憾，您未达到及格分数';
+
+            const actionsDiv = document.getElementById('resultActions');
+            actionsDiv.innerHTML = '<button class="btn btn-secondary" onclick="location.reload()">返回首页</button>';
+
+            document.getElementById('loginSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.remove('hidden');
+        }
+
+        function updateExamPointsList() {
+            const container = document.getElementById('examPointsList');
+            container.innerHTML = '';
+
+            examPoints.forEach((point, index) => {
+                const questionAnswered = userAnswers[index] !== undefined;
+                const isCompleted = questionAnswered;
+                const statusClass = isCompleted ? 'status-completed' : 'status-pending';
+                const statusText = isCompleted ? '已完成' : '待学习';
+
+                const card = document.createElement('div');
+                card.className = 'exam-point-card';
+                card.innerHTML = `
+                    <h3>${point.id}. ${point.title}</h3>
+                    <p>${point.description}</p>
+                    <span class="status ${statusClass}">${statusText}</span>
+                `;
+
+                if (!isCompleted && currentPointIndex === index) {
+                    card.onclick = () => showLearning(index);
+                } else if (isCompleted) {
+                    card.onclick = () => showLearning(index);
+                }
+
+                container.appendChild(card);
+            });
+
+            // 检查是否全部完成
+            const allCompleted = userAnswers.length === examPoints.length && userAnswers.every(a => a !== undefined);
+            if (allCompleted) {
+                setTimeout(() => showResults(), 500);
+            }
+        }
+
+        function showLearning(index) {
+            currentPointIndex = index;
+            currentSection = 'learning'; // 记录当前页面位置并保存
+            saveProgress();
+
+            const point = examPoints[index];
+
+            document.getElementById('learningTitle').textContent = `${point.id}. ${point.title} - 学习`;
+
+            let contentHTML = `<div class="text-content">${point.learningContent.text}</div>`;
+
+            if (point.learningContent.imageUrl) {
+    // 支持多张图片，用换行符分隔
+    const urls = point.learningContent.imageUrl.split('\n').filter(url => url.trim());
+    urls.forEach(url => {
+        contentHTML += `<img src="${url.trim()}" alt="学习图片" />`;
+    });
+}
+
+            if (point.learningContent.videoUrl) {
+                contentHTML += `<video controls><source src="${point.learningContent.videoUrl}" type="video/mp4">您的浏览器不支持视频播放。</video>`;
+            }
+
+            document.getElementById('learningContent').innerHTML = contentHTML;
+
+            // 确保进入新考点学习时，上一个考点的单选题区域被隐藏
+            document.getElementById('questionSection').classList.add('hidden');
+            
+            document.getElementById('examListSection').classList.add('hidden');
+            document.getElementById('learningSection').classList.remove('hidden');
+
+            // 展示并更新进度条
+            document.getElementById('progressSection').classList.remove('hidden');
+            updateProgressBar();
+          // 👇 添加这行
+    				window.scrollTo({ top: 0, behavior: 'smooth' });
+// 👇 添加这行，绑定图片点击事件
+    setTimeout(bindImageClick, 100);
+        }
+
+        function startQuestion() {
+            currentSection = 'question'; // 记录并保存
+            saveProgress();
+
+            const point = examPoints[currentPointIndex];
+            const question = point.question;
+
+            document.getElementById('questionTitle').textContent = `${point.id}. ${point.title} - 单选题`;
+            document.getElementById('questionText').textContent = question.question;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const optionDiv = document.createElement('div');
+                optionDiv.className = 'option';
+                optionDiv.innerHTML = `
+                    <input type="radio" name="questionOption" value="${index}" id="option${index}" />
+                    <label for="option${index}">${option}</label>
+                `;
+                optionDiv.onclick = function() {
+                    document.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+                    this.classList.add('selected');
+                    this.querySelector('input').checked = true;
+                };
+                optionsContainer.appendChild(optionDiv);
+            });
+
+            document.getElementById('learningSection').classList.add('hidden');
+            document.getElementById('questionSection').classList.remove('hidden');
+            updateProgressBar();
+          // 👇 添加这行
+    				window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        }
+
+        function submitQuestion() {
+            const selectedOption = document.querySelector('input[name="questionOption"]:checked');
+            if (!selectedOption) {
+                alert('请选择一个答案');
+                return;
+            }
+
+            const userAnswer = parseInt(selectedOption.value);
+            userAnswers[currentPointIndex] = userAnswer;
+
+            // 触发撒花和悬浮文字
+            const completedPointTitle = examPoints[currentPointIndex].title;
+            celebratePointComplete(completedPointTitle);
+
+            // 移动到下一个考点
+            currentPointIndex++;
+            if (currentPointIndex < examPoints.length) {
+                showLearning(currentPointIndex);
+            } else {
+                showResults();
+            }
+        }
+
+        function showResults() {
+            // 答题结束，清除进度条和断点记录
+            document.getElementById('progressSection').classList.add('hidden');
+            localStorage.removeItem('medical_exam_progress'); 
+
+            let totalScore = 0;
+            const scorePerQuestion = 10; // 每题10分
+
+            const resultDetails = document.getElementById('resultDetails');
+            resultDetails.innerHTML = '';
+
+            examPoints.forEach((point, index) => {
+                const questionCorrect = userAnswers[index] === point.question.correctAnswer;
+                const questionScore = questionCorrect ? scorePerQuestion : 0;
+                totalScore += questionScore;
+
+                const detailHTML = `
+                    <div class="detail-item ${questionCorrect ? 'correct' : 'wrong'}">
+                        <h4>${point.id}. ${point.title}（本考点得分：${questionScore}/${scorePerQuestion}分）</h4>
+                        <div class="detail-info">
+                            <strong>单选题：</strong>${questionCorrect ? '✓ 正确' : '✗ 错误'}（得分：${questionScore}/${scorePerQuestion}分）
+                        </div>
+                        
+                        <button class="view-question-btn" onclick="toggleQuestionOriginal(${index})">📋 点击查看原题</button>
+                        
+                        <div class="question-original" id="questionOriginal${index}">
+                            <h5>📝 单选题原题</h5>
+                            <div class="q-text">${point.question.question}</div>
+                            <div class="q-options">
+                                ${point.question.options.map((opt, i) => `
+                                    <div class="${i === point.question.correctAnswer ? 'correct' : (i === userAnswers[index] && !questionCorrect ? 'wrong' : '')}">
+                                        ${String.fromCharCode(65 + i)}. ${opt}
+                                        ${i === point.question.correctAnswer ? ' ✓ 正确答案' : ''}
+                                        ${i === userAnswers[index] && i !== point.question.correctAnswer ? ' (你的选择)' : ''}
+                                    </div>
+                                `).join('')}
+                            </div>
+                        </div>
+                        
+                        ${!questionCorrect ? `
+                            <div class="explanation">
+                                <strong>解析：</strong><br/>
+                                ${point.question.explanation}
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+                resultDetails.innerHTML += detailHTML;
+            });
+
+            const finalScore = totalScore;
+            const passed = finalScore >= systemConfig.passingScore;
+
+            document.getElementById('userNameDisplay').textContent = `考生：${currentUserName}`;
+            document.getElementById('finalScore').textContent = finalScore + '分';
+            document.getElementById('finalScore').className = 'score ' + (passed ? 'pass' : 'fail');
+            document.getElementById('resultMessage').textContent = passed ? '🎉 恭喜您通过考试！' : '很遗憾，您未达到及格分数';
+
+            const actionsDiv = document.getElementById('resultActions');
+            actionsDiv.innerHTML = '';
+
+            if (passed) {
+                actionsDiv.innerHTML = '<button class="btn btn-success" onclick="location.reload()">完成考试</button>';
+            } else {
+                actionsDiv.innerHTML = `
+                    <button class="btn btn-secondary" onclick="location.reload()">退出</button>
+                `;
+            }
+
+            // 保存考试记录
+            saveExamRecord(currentUserName, finalScore, passed);
+
+            // 同步到飞书
+            syncToFeishu(currentUserName, finalScore, passed);
+
+            
+            document.getElementById('learningSection').classList.add('hidden');
+            document.getElementById('examListSection').classList.add('hidden');
+            document.getElementById('resultSection').classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function saveExamRecord(userName, score, passed) {
+            const record = {
+                userName: userName,
+                examTime: new Date().toLocaleString(),
+                score: score,
+                passed: passed,
+                userAnswers: userAnswers
+            };
+
+            examRecords.push(record);
+            localStorage.setItem('examRecords', JSON.stringify(examRecords));
+        }
+
+        // ==================== 管理员功能 ====================
+        function showAdminLogin() {
+            document.getElementById('adminLoginSection').classList.remove('hidden');
+        }
+
+        function hideAdminLogin() {
+            document.getElementById('adminLoginSection').classList.add('hidden');
+        }
+
+        function adminLogin() {
+            const password = document.getElementById('adminPassword').value;
+            if (password === systemConfig.adminPassword) {
+                document.getElementById('adminLoginSection').classList.add('hidden');
+                document.getElementById('adminSection').classList.remove('hidden');
+                loadAdminData();
+            } else {
+                alert('密码错误');
+            }
+        }
+
+        function logoutAdmin() {
+            document.getElementById('adminSection').classList.add('hidden');
+        }
+
+        function switchAdminTab(tabName) {
+            document.querySelectorAll('.admin-panel').forEach(panel => panel.classList.add('hidden'));
+            document.querySelectorAll('.admin-tab').forEach(tab => tab.classList.remove('active'));
+
+            document.getElementById(tabName + 'Panel').classList.remove('hidden');
+            event.target.classList.add('active');
+
+            if (tabName === 'records') {
+                loadExamRecords();
+            } else if (tabName === 'detailRecords') {
+                loadDetailRecords();
+            }
+        }
+
+        function loadAdminData() {
+            document.getElementById('systemTitle').value = systemConfig.systemTitle;
+            document.getElementById('passingScore').value = systemConfig.passingScore;
+            document.getElementById('adminPasswordConfig').value = systemConfig.adminPassword;
+
+            loadAdminPointsList();
+        }
+
+        function loadAdminPointsList() {
+            const container = document.getElementById('adminPointsList');
+            container.innerHTML = '';
+
+            examPoints.forEach((point, index) => {
+                const pointDiv = document.createElement('div');
+                pointDiv.className = 'exam-point-edit';
+                pointDiv.innerHTML = `
+                    <h4>
+                        ${point.id}. ${point.title}
+                        <span class="point-number">考点 ${index + 1}</span>
+                    </h4>
+                    <div class="form-group">
+                        <label>标题</label>
+                        <input type="text" class="point-title" value="${point.title}" data-index="${index}" />
+                    </div>
+                    <div class="form-group">
+                        <label>描述</label>
+                        <textarea class="point-description" data-index="${index}">${point.description}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>学习内容（文本）</label>
+                        <textarea class="point-learning-text" data-index="${index}">${point.learningContent.text}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>学习图片URL</label>
+                        <input type="text" class="point-learning-image" value="${point.learningContent.imageUrl || ''}" data-index="${index}" />
+                    </div>
+                    <div class="form-group">
+                        <label>学习视频URL</label>
+                        <input type="text" class="point-learning-video" value="${point.learningContent.videoUrl || ''}" data-index="${index}" />
+                    </div>
+                    <div class="form-group">
+                        <label>单选题问题</label>
+                        <textarea class="point-question-text" data-index="${index}">${point.question.question}</textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>选项（用|分隔）</label>
+                        <input type="text" class="point-question-options" value="${point.question.options.join('|')}" data-index="${index}" />
+                    </div>
+                    <div class="form-group">
+                        <label>正确答案（0-3）</label>
+                        <input type="number" class="point-question-correct" value="${point.question.correctAnswer}" min="0" max="3" data-index="${index}" />
+                    </div>
+                    <div class="form-group">
+                        <label>题目解析</label>
+                        <textarea class="point-question-explanation" data-index="${index}">${point.question.explanation}</textarea>
+                    </div>`;
+                container.appendChild(pointDiv);
+            });
+        }
+
+        function saveSystemConfig() {
+            systemConfig.systemTitle = document.getElementById('systemTitle').value;
+            systemConfig.passingScore = parseInt(document.getElementById('passingScore').value);
+            systemConfig.adminPassword = document.getElementById('adminPasswordConfig').value;
+
+            localStorage.setItem('examSystemConfig', JSON.stringify(systemConfig));
+            alert('系统配置已保存');
+        }
+
+        function saveAllPoints() {
+            const titles = document.querySelectorAll('.point-title');
+            const descriptions = document.querySelectorAll('.point-description');
+            const learningTexts = document.querySelectorAll('.point-learning-text');
+            const learningImages = document.querySelectorAll('.point-learning-image');
+            const learningVideos = document.querySelectorAll('.point-learning-video');
+            const questionTexts = document.querySelectorAll('.point-question-text');
+            const questionOptions = document.querySelectorAll('.point-question-options');
+            const questionCorrects = document.querySelectorAll('.point-question-correct');
+            const questionExplanations = document.querySelectorAll('.point-question-explanation');
+            
+
+            titles.forEach((titleInput, index) => {
+                examPoints[index].title = titleInput.value;
+                examPoints[index].description = descriptions[index].value;
+                examPoints[index].learningContent.text = learningTexts[index].value;
+                examPoints[index].learningContent.imageUrl = learningImages[index].value;
+                examPoints[index].learningContent.videoUrl = learningVideos[index].value;
+                examPoints[index].question.question = questionTexts[index].value;
+                examPoints[index].question.options = questionOptions[index].value.split('|');
+                examPoints[index].question.correctAnswer = parseInt(questionCorrects[index].value);
+                examPoints[index].question.explanation = questionExplanations[index].value;
+
+            });
+
+            localStorage.setItem('examPoints', JSON.stringify(examPoints));
+            alert('所有考点已保存');
+        }
+
+        function loadExamRecords() {
+            const tbody = document.getElementById('recordsTableBody');
+            tbody.innerHTML = '';
+
+            examRecords.forEach((record, index) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${record.userName}</td>
+                    <td>${record.examTime}</td>
+                    <td class="${record.passed ? 'score-pass' : 'score-fail'}">${record.score}分</td>
+                    <td>${record.passed ? '✓ 通过' : '✗ 未通过'}</td>
+                    <td><button class="btn btn-secondary" style="padding: 5px 10px; font-size: 12px;" onclick="viewRecordDetail(${index})">查看</button></td>
+                    <td><button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteExamRecord(${index})">删除</button></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function loadDetailRecords() {
+            const table = document.getElementById('detailRecordsTable');
+            const thead = document.getElementById('detailRecordsHead');
+            const tbody = document.getElementById('detailRecordsBody');
+
+            // 构建表头
+            let headHTML = '<tr><th>姓名</th><th>考试分数</th>';
+            examPoints.forEach((point, index) => {
+                headHTML += `
+                    <th>考点${point.id}单选</th>
+                `;
+            });
+            headHTML += '<th>删除</th></tr>';
+            thead.innerHTML = headHTML;
+
+            // 构建表体
+            tbody.innerHTML = '';
+            examRecords.forEach((record, index) => {
+                const tr = document.createElement('tr');
+                let rowHTML = `<td>${record.userName}</td><td class="${record.passed ? 'score-pass' : 'score-fail'}">${record.score}分</td>`;
+
+                examPoints.forEach((point, i) => {
+                    const questionCorrect = record.userAnswers[i] === point.question.correctAnswer;
+
+                    rowHTML += `
+                        <td class="${questionCorrect ? 'cell-correct' : 'cell-wrong'}">${questionCorrect ? '✓' : '✗'}</td>
+                    `;
+                });
+
+                rowHTML += `<td><button class="btn btn-danger" style="padding: 5px 10px; font-size: 12px;" onclick="deleteExamRecord(${index})">删除</button></td>`;
+                tr.innerHTML = rowHTML;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function viewRecordDetail(index) {
+            const record = examRecords[index];
+            let detailHTML = `<strong>考生：</strong>${record.userName}<br/><br/>`;
+
+            examPoints.forEach((point, i) => {
+                const questionCorrect = record.userAnswers[i] === point.question.correctAnswer;
+
+                detailHTML += `<strong>${point.id}. ${point.title}</strong><br/>`;
+                detailHTML += `单选题：${questionCorrect ? '✓ 正确' : '✗ 错误'}<br/><br/>`;
+            });
+
+            alert(detailHTML);
+        }
+
+        // 删除考试记录功能
+        function deleteExamRecord(index) {
+            if (confirm('确定要删除这条考试记录吗？此操作不可恢复！')) {
+                examRecords.splice(index, 1);
+                localStorage.setItem('examRecords', JSON.stringify(examRecords));
+                loadExamRecords();
+                loadDetailRecords();
+                alert('记录已成功删除');
+            }
+        }
+
+        // 清空所有记录功能
+        function deleteAllRecords() {
+            if (examRecords.length === 0) {
+                alert('当前没有记录可删除');
+                return;
+            }
+
+            if (confirm(`确定要清空所有 ${examRecords.length} 条考试记录吗？此操作不可恢复！`)) {
+                examRecords = [];
+                localStorage.setItem('examRecords', JSON.stringify(examRecords));
+                loadExamRecords();
+                loadDetailRecords();
+                alert('所有记录已成功清空');
+            }
+        }
+
+        function exportConfig() {
+            const config = {
+                systemConfig: systemConfig,
+                examPoints: examPoints
+            };
+
+            const blob = new Blob([JSON.stringify(config, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'exam_system_config.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importConfig(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const config = JSON.parse(e.target.result);
+                    if (config.systemConfig) {
+                        systemConfig = config.systemConfig;
+                        localStorage.setItem('examSystemConfig', JSON.stringify(systemConfig));
+                    }
+                    if (config.examPoints) {
+                        examPoints = config.examPoints;
+                        localStorage.setItem('examPoints', JSON.stringify(examPoints));
+                    }
+                    loadAdminData();
+                    alert('配置导入成功');
+                } catch (err) {
+                    alert('配置文件格式错误');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // 飞书 Webhook 同步功能
+        async function syncToFeishu(userName, score, passed) {
+            // 请在此处填入你的真实 Webhook 地址
+            const webhookUrl = 'https://open.larkoffice.com/open-apis/bot/v2/hook/12e829d3-82a5-4495-b57d-7026a9495040'; 
+
+            if (!webhookUrl || webhookUrl === 'YOUR_WEBHOOK_URL_HERE') {
+                console.log('未配置机器人Webhook，跳过同步');
+                return;
+            }
+
+            // --- 这里开始是修改后的构建逻辑 ---
+
+// 第一步：先循环10个考点，把每个考点的单选题详细对错拼出来
+            let detailReport = "";
+            examPoints.forEach((point, i) => {
+                // 判断单选题对错
+                const qOk = userAnswers[i] === point.question.correctAnswer ? "✅" : "❌";
+                
+                // 获取医生选择的选项内容
+                const userChoiceIndex = userAnswers[i];
+                const userChoiceText = userChoiceIndex !== undefined ? point.question.options[userChoiceIndex] : "未作答";
+                const userChoiceLetter = userChoiceIndex !== undefined ? String.fromCharCode(65 + userChoiceIndex) : "-";
+                
+                // 获取正确答案的选项内容
+                const correctIndex = point.question.correctAnswer;
+                const correctText = point.question.options[correctIndex];
+                const correctLetter = String.fromCharCode(65 + correctIndex);
+                
+                detailReport += `\n【考点${point.id}】${point.title}\n`;
+                detailReport += `  - 单选: ${qOk}\n`;
+                detailReport += `    医生选择: ${userChoiceLetter}. ${userChoiceText}\n`;
+                detailReport += `    正确答案: ${correctLetter}. ${correctText}\n`;
+                detailReport += `--------------------------`;
+            });
+          
+// 第二步：把上面拼好的“详细记录”塞进最终的 messageText
+const messageText = `📋 启动期新医生入驻考核报告
+--------------------------
+👤 姓名：${userName}
+📊 总分：${score} 分
+🏁 结果：${passed ? '✅ 考核通过' : '❌ 未通过'}
+⏰ 时间：${new Date().toLocaleString()}
+--------------------------
+📝 答题明细（考试记录）：
+${detailReport}`;
+
+// --- 修改结束，下面继续执行你原有的 fetch 发送逻辑 ---
+
+            try {
+                // 使用 no-cors 模式绕过浏览器拦截，直接发送给机器人
+                fetch(webhookUrl, {
+                    method: 'POST',
+                    mode: 'no-cors', // 关键点：告诉浏览器不要拦截跨域
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        "msg_type": "text",
+                        "content": {
+                            "text": messageText
+                        }
+                    })
+                });
+                console.log('成绩已尝试推送到飞书群');
+            } catch (error) {
+                console.error('推送到飞书群失败：', error);
+            }
+        }
+
+        // 初始化系统
+        init();
+      
+      // ========== 撒花和悬浮文字功能 ==========
+        function celebratePointComplete(pointTitle) {
+            // 1. 显示悬浮文字
+            showFloatingText('🎉 ' + pointTitle + ' 完成！');
+
+            // 2. 触发撒花
+            createConfetti();
+        }
+
+        function showFloatingText(text) {
+            const floatEl = document.createElement('div');
+            floatEl.className = 'floating-text';
+            floatEl.textContent = text;
+            document.body.appendChild(floatEl);
+
+            // 2秒后自动移除
+            setTimeout(() => {
+                floatEl.remove();
+            }, 2000);
+        }
+
+        function createConfetti() {
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            document.body.appendChild(container);
+
+            const colors = ['#66bb6a', '#43a047', '#ffb74d', '#42a5f5', '#ef5350', '#ab47bc'];
+            const shapes = ['circle', 'square', 'triangle'];
+
+            // 创建50个彩纸
+            for (let i = 0; i < 50; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+
+                const color = colors[Math.floor(Math.random() * colors.length)];
+                const shape = shapes[Math.floor(Math.random() * shapes.length)];
+                const left = Math.random() * 100;
+                const delay = Math.random() * 0.5;
+                const size = Math.random() * 8 + 6;
+
+                confetti.style.left = left + '%';
+                confetti.style.animationDelay = delay + 's';
+                confetti.style.width = size + 'px';
+                confetti.style.height = size + 'px';
+                confetti.style.backgroundColor = color;
+
+                if (shape === 'circle') {
+                    confetti.style.borderRadius = '50%';
+                } else if (shape === 'triangle') {
+                    confetti.style.width = '0';
+                    confetti.style.height = '0';
+                    confetti.style.backgroundColor = 'transparent';
+                    confetti.style.borderLeft = size/2 + 'px solid transparent';
+                    confetti.style.borderRight = size/2 + 'px solid transparent';
+                    confetti.style.borderBottom = size + 'px solid ' + color;
+                }
+
+                container.appendChild(confetti);
+            }
+
+            // 3秒后移除容器
+            setTimeout(() => {
+                container.remove();
+            }, 3000);
+        }
+
+      // ========== 图片放大功能 ==========
+function openLightbox(imgSrc) {
+    const lightbox = document.getElementById('imageLightbox');
+    const lightboxImg = document.getElementById('lightboxImage');
+    lightboxImg.src = imgSrc;
+    lightbox.classList.add('active');
+    document.body.style.overflow = 'hidden'; // 禁止背景滚动
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('imageLightbox');
+    lightbox.classList.remove('active');
+    document.body.style.overflow = ''; // 恢复滚动
+}
+
+// 给学习内容中的所有图片绑定点击事件
+function bindImageClick() {
+    const images = document.querySelectorAll('.learning-content img');
+    images.forEach(img => {
+        img.onclick = function(e) {
+            e.stopPropagation();
+            openLightbox(this.src);
+        };
+    });
+}
+      // 展开/折叠原题
+function toggleQuestionOriginal(index) {
+    const el = document.getElementById('questionOriginal' + index);
+    const btn = el.previousElementSibling;
+    
+    if (el.classList.contains('show')) {
+        el.classList.remove('show');
+        btn.textContent = '📋 点击查看原题';
+    } else {
+        el.classList.add('show');
+        btn.textContent = '📋 收起原题';
+    }
+}
+      
+    </script>
+  <!-- 图片放大弹窗 -->
+<div class="image-lightbox" id="imageLightbox" onclick="closeLightbox()">
+    <span class="close-btn">&times;</span>
+    <img id="lightboxImage" src="" alt="放大图片" />
+</div>
+</body>
+</html>
